@@ -11,7 +11,7 @@ $(document).keydown(function(event) {
   }
 })
 
-function gameStart () {
+function gameStart() {
   var randomButton = Math.floor(Math.random()*4);
   randomArray.unshift(colorArray[randomButton]);
   var chosenColor = randomArray[0];
@@ -25,14 +25,33 @@ function gameStart () {
 // Click Button
 $('.btn').click(function(){
   clickedButton = event.target.id;
+  $(this).addClass('pressed')
+  setTimeout(function(){
+    $('.btn').removeClass('pressed');
+  },100);
   console.log(clickedButton);
   clickedArray.unshift(clickedButton);
   console.log(clickedArray);
-  if (clickedButton == randomArray[0]) {
+  if (clickedArray[0] == randomArray[0]) {
     console.log("Correct");
     lvl++;
     $("#level-title").text("Level " + lvl);
+    next()
   } else {
     console.log("Game Over");
+    $("#level-title").text("Game Over");
+    $('.btn').off('click');
   }
 })
+
+// Next Level
+function next() {
+  var randomButton = Math.floor(Math.random()*4);
+  randomArray.unshift(colorArray[randomButton]);
+  var chosenColor = randomArray[0];
+  console.log(randomArray);
+  console.log(chosenColor);
+  $("#" + chosenColor).fadeOut(50).fadeIn(50);
+  var audio = new Audio("sounds/"+ chosenColor +".mp3");
+  audio.play();
+}
